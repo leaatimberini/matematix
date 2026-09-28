@@ -27,10 +27,10 @@ export const unit6Sistemas: TopicUnit = {
     '5) Función Definida a Tramos - Conceptos gráficos y Análisis'
   ],
   whatYouWillLearn: [
-    'Resolver sistemas 2x2 por sustitución, igualación o determinantes.',
+    'Resolver sistemas $2 \\times 2$ por sustitución, igualación o determinantes.',
     'Interpretar geométricamente el sistema como dos rectas en el plano cartesiano.',
     'Clasificar formalmente el sistema: SCD (secantes), SCI (coincidentes) o SI (paralelas distintas).',
-    'Graficar funciones definidas a tramos respetando los puntos abiertos (<, >) y cerrados (<=, >=).',
+    'Graficar funciones definidas a tramos respetando los puntos abiertos ($<$, $>$) y cerrados ($\\le$, $\\ge$).',
     'Determinar con precisión matemática el dominio y el conjunto imagen de funciones a tramos.'
   ],
   summaryTheory: [

@@ -25,10 +25,10 @@ export const unit5Lineal: TopicUnit = {
   ],
   whatYouWillLearn: [
     'Reconocer las condiciones de existencia y unicidad para que una relación sea función.',
-    'Identificar los parámetros m (pendiente) y b (ordenada al origen) de la ecuación explícita y = mx + b.',
-    'Calcular la pendiente de una recta a partir de dos puntos: m = (y₂ - y₁) / (x₂ - x₁).',
-    'Hallar la ecuación de la recta que pasa por un punto dado conocida su pendiente: y - y₀ = m(x - x₀).',
-    'Aplicar la condición de paralelismo (m₁ = m₂) y de perpendicularidad (m₂ = -1/m₁).',
+    'Identificar los parámetros $m$ (pendiente) y $b$ (ordenada al origen) de la ecuación explícita $y = mx + b$.',
+    'Calcular la pendiente de una recta a partir de dos puntos: $m = \\frac{y_2 - y_1}{x_2 - x_1}$.',
+    'Hallar la ecuación de la recta que pasa por un punto dado conocida su pendiente: $y - y_0 = m(x - x_0)$.',
+    'Aplicar la condición de paralelismo ($m_1 = m_2$) y de perpendicularidad ($m_2 = -\\frac{1}{m_1}$).',
     'Calcular analítica y gráficamente el punto de intersección entre dos rectas secantes.'
   ],
   summaryTheory: [

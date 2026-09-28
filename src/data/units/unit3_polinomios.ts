@@ -29,9 +29,9 @@ export const unit3Polinomios: TopicUnit = {
   whatYouWillLearn: [
     'Operar con monomios y polinomios: sumar, restar y multiplicar ordenando por potencias decrecientes.',
     'Aplicar correctamente la Regla de Ruffini completando los términos faltantes con coeficientes cero.',
-    'Aplicar e interpretar el Teorema del Resto para calcular el resto de P(x) : (x - a) mediante P(a).',
-    'Determinar si un polinomio es divisible por un binomio (x - a) verificando si P(a) = 0.',
-    'Plantear y resolver ecuaciones para hallar el valor de un parámetro k que cumpla condiciones de divisibilidad.'
+    'Aplicar e interpretar el Teorema del Resto para calcular el resto de $P(x) : (x - a)$ mediante $P(a)$.',
+    'Determinar si un polinomio es divisible por un binomio $(x - a)$ verificando si $P(a) = 0$.',
+    'Plantear y resolver ecuaciones para hallar el valor de un parámetro $k$ que cumpla condiciones de divisibilidad.'
   ],
   summaryTheory: [
     {

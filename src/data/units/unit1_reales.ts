@@ -31,9 +31,9 @@ export const unit1Reales: TopicUnit = {
     '9) Ecuaciones lineales - Ejercicios resueltos'
   ],
   whatYouWillLearn: [
-    'Reconocer y clasificar los diversos conjuntos numéricos (N, Z, Q, I, R).',
+    'Reconocer y clasificar los diversos conjuntos numéricos ($\\mathbb{N}$, $\\mathbb{Z}$, $\\mathbb{Q}$, $\\mathbb{I}$, $\\mathbb{R}$).',
     'Convertir números decimales exactos y periódicos (puros y mixtos) a fracción irreducible.',
-    'Aplicar propiedades de potencias con exponentes enteros y fraccionarios (a^-n, a^(m/n)).',
+    'Aplicar propiedades de potencias con exponentes enteros y fraccionarios ($a^{-n}$, $a^{m/n}$).',
     'Operar con radicales: extracción de factores fuera del radical y suma de términos semejantes.',
     'Racionalizar denominadores con raíces simples y binomios conjugados.',
     'Resolver ecuaciones de primer grado y clasificar su conjunto solución (única, infinitas soluciones o vacía).'

@@ -20,8 +20,25 @@ function escapeAndFormatText(str: string): string {
   return s;
 }
 
+function hasProseWords(str: string): boolean {
+  const words = str.match(/[a-zA-ZáéíóúñÁÉÍÓÚÑ]{3,}/g) || [];
+  const mathCommands = new Set([
+    'frac', 'sqrt', 'mathbb', 'text', 'cdot', 'times', 'left', 'right',
+    'begin', 'cases', 'bmatrix', 'pmatrix', 'end', 'sum', 'lim', 'int',
+    'log', 'ln', 'sin', 'cos', 'tan', 'cot', 'sec', 'csc', 'forall', 'exists',
+    'infty', 'partial', 'alpha', 'beta', 'gamma', 'delta', 'theta', 'lambda',
+    'sigma', 'omega', 'approx', 'equiv', 'circ', 'pm', 'mp', 'div', 'ne', 'le',
+    'ge', 'cup', 'cap', 'subset', 'in', 'notin', 'quad', 'qquad'
+  ]);
+  const nonMathWords = words.filter(w => !mathCommands.has(w.toLowerCase()));
+  return nonMathWords.length >= 2;
+}
+
 function isLikelyMath(str: string): boolean {
   const trimmed = str.trim();
+  // CRITICAL: If the string has 2 or more prose words, it is a text sentence, NEVER a pure math expression!
+  if (hasProseWords(trimmed)) return false;
+
   // If it has backslash, it's LaTeX
   if (trimmed.includes('\\')) return true;
   // If it has common math symbols
@@ -47,20 +64,6 @@ function isLikelyMath(str: string): boolean {
     if (/^[a-zA-Z]$/.test(trimmed)) return true;
   }
   return false;
-}
-
-function hasProseWords(str: string): boolean {
-  const words = str.match(/[a-zA-ZáéíóúñÁÉÍÓÚÑ]{3,}/g) || [];
-  const mathCommands = new Set([
-    'frac', 'sqrt', 'mathbb', 'text', 'cdot', 'times', 'left', 'right',
-    'begin', 'cases', 'bmatrix', 'pmatrix', 'end', 'sum', 'lim', 'int',
-    'log', 'ln', 'sin', 'cos', 'tan', 'cot', 'sec', 'csc', 'forall', 'exists',
-    'infty', 'partial', 'alpha', 'beta', 'gamma', 'delta', 'theta', 'lambda',
-    'sigma', 'omega', 'approx', 'equiv', 'circ', 'pm', 'mp', 'div', 'ne', 'le',
-    'ge', 'cup', 'cap', 'subset', 'in', 'notin', 'quad', 'qquad'
-  ]);
-  const nonMathWords = words.filter(w => !mathCommands.has(w.toLowerCase()));
-  return nonMathWords.length >= 2;
 }
 
 export function renderMathAndText(text: string, defaultBlock: boolean = false): string {

@@ -25,12 +25,12 @@ export const unit8Logaritmos: TopicUnit = {
     '4) Logaritmos - Función Logarítmica'
   ],
   whatYouWillLearn: [
-    'Comprender y aplicar la definición formal: log_b(a) = c <=> b^c = a.',
+    'Comprender y aplicar la definición formal: $\\log_b(a) = c \\iff b^c = a$.',
     'Aplicar propiedades: logaritmo de un producto (suma), cociente (resta) y potencia (multiplicación por el exponente).',
-    'Reconocer que el número 1 equivale a log_b(b) (ej: 1 = log₁₀(10) o 1 = log₂(2)).',
+    'Reconocer que el número 1 equivale a $\\log_b(b)$ (ej: $1 = \\log_{10}(10)$ o $1 = \\log_2(2)$).',
     'Resolver ecuaciones logarítmicas aplicando propiedades y simplificando expresiones racionales.',
     'REALIZAR LA VERIFICACIÓN OBLIGATORIA: descartar raíces que hagan negativos o nulos los argumentos originales.',
-    'Escribir el conjunto solución formal S = {x}.'
+    'Escribir el conjunto solución formal $S = \\{x\\}$.'
   ],
   summaryTheory: [
     {

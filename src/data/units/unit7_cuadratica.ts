@@ -28,12 +28,12 @@ export const unit7Cuadratica: TopicUnit = {
     '5) Sistemas mixtos - Problema de aplicación'
   ],
   whatYouWillLearn: [
-    'Determinar el número y tipo de raíces evaluando el signo del discriminante Δ = b² - 4ac.',
+    'Determinar el número y tipo de raíces evaluando el signo del discriminante $\\Delta = b^2 - 4ac$.',
     'Calcular las raíces reales mediante la fórmula resolvente de Bhaskara.',
-    'Hallar las coordenadas del vértice V(x_v, y_v) usando x_v = -b / (2a) e y_v = f(x_v).',
-    'Identificar la concavidad (ramas hacia arriba si a > 0, ramas hacia abajo si a < 0).',
-    'Calcular el conjunto imagen: [y_v, ∞) si a > 0, o (-∞, y_v] si a < 0.',
-    'Realizar el pasaje entre formas polinómica, canónica a(x - x_v)² + y_v y factorizada a(x - x₁)(x - x₂).'
+    'Hallar las coordenadas del vértice $V(x_v, y_v)$ usando $x_v = -\\frac{b}{2a}$ e $y_v = f(x_v)$.',
+    'Identificar la concavidad (ramas hacia arriba si $a > 0$, ramas hacia abajo si $a < 0$).',
+    'Calcular el conjunto imagen: $[y_v, \\infty)$ si $a > 0$, o $(-\\infty, y_v]$ si $a < 0$.',
+    'Realizar el pasaje entre formas polinómica, canónica $a(x - x_v)^2 + y_v$ y factorizada $a(x - x_1)(x - x_2)$.'
   ],
   summaryTheory: [
     {

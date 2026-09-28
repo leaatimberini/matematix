@@ -24,7 +24,7 @@ export const unit9Exponenciales: TopicUnit = {
   whatYouWillLearn: [
     'Reconocer y resolver ecuaciones exponenciales mediante descomposición en factores primos e igualación de bases.',
     'Resolver ecuaciones con exponentes cuadráticos aplicando raíces o trinomios cuadrados perfectos.',
-    'Resolver ecuaciones exponenciales reducibles a cuadráticas mediante la sustitución u = a^x.',
+    'Resolver ecuaciones exponenciales reducibles a cuadráticas mediante la sustitución $u = a^x$.',
     'Verificar obligatoriamente cada solución encontrada reemplazándola en la ecuación original.',
     'Analizar y graficar funciones exponenciales identificando su asíntota horizontal y conjunto imagen.'
   ],

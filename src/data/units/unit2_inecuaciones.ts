@@ -31,7 +31,7 @@ export const unit2Inecuaciones: TopicUnit = {
     'Resolver inecuaciones lineales teniendo en cuenta la inversión del sentido al multiplicar o dividir por un negativo.',
     'Resolver inecuaciones racionales fraccionarias igualando a cero y armando la tabla de signos (método de intervalos).',
     'Reconocer que el denominador NUNCA puede anularse (siempre lleva paréntesis abierto en la solución).',
-    'Aplicar propiedades del valor absoluto: |A| <= k (conjunción) y |A| >= k (disyunción).',
+    'Aplicar propiedades del valor absoluto: $|A| \\le k$ (conjunción) y $|A| \\ge k$ (disyunción).',
     'Escribir el conjunto solución formal y representarlo en la recta numérica tal como lo exige el examen UNLaM.'
   ],
   summaryTheory: [

@@ -31,8 +31,8 @@ export const unit10Trigonometria: TopicUnit = {
     'Reconocer los distintos sistemas de medición angular (sexagesimal y radial) y convertir entre ellos.',
     'Calcular razones trigonométricas (seno, coseno, tangente) en triángulos rectángulos y circunferencia unitaria.',
     'Comprender los signos de las funciones en los 4 cuadrantes.',
-    'Demostrar y simplificar identidades trigonométricas usando sen²(x) + cos²(x) = 1.',
-    'Resolver ecuaciones trigonométricas encontrando todas las soluciones en el intervalo [0, 2π).'
+    'Demostrar y simplificar identidades trigonométricas usando $\\sin^2(x) + \\cos^2(x) = 1$.',
+    'Resolver ecuaciones trigonométricas encontrando todas las soluciones en el intervalo $[0, 2\\pi)$.'
   ],
   summaryTheory: [
     {
