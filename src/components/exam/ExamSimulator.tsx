@@ -8,8 +8,10 @@ import {
   verifyNumericAnswer, 
   verifyIntervalAnswer, 
   verifyCoordinateAnswer, 
-  areAlgebraicExpressionsEquivalent 
+  areAlgebraicExpressionsEquivalent,
+  diagnoseError
 } from '../../math/mathEngine';
+import { MATH_STORIES } from '../../data/mathStories';
 import { useUser } from '../../context/UserContext';
 import { 
   Clock, 
@@ -24,7 +26,10 @@ import {
   CheckCircle2,
   XCircle,
   TrendingUp,
-  BookOpen
+  BookOpen,
+  Compass,
+  Lightbulb,
+  ShieldAlert
 } from 'lucide-react';
 
 export const ExamSimulator: React.FC = () => {
@@ -39,6 +44,7 @@ export const ExamSimulator: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [examResult, setExamResult] = useState<ExamResult | null>(null);
   const [showConfirmSubmit, setShowConfirmSubmit] = useState<boolean>(false);
+  const [storyModalUnitId, setStoryModalUnitId] = useState<number | null>(null);
 
   // Timer countdown
   useEffect(() => {
@@ -614,6 +620,44 @@ export const ExamSimulator: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* Diagnostic Breakdown for Incorrect Question */}
+                  {!isCorrect && (() => {
+                    const diag = diagnoseError(
+                      attempt?.userAnswer || '', 
+                      ex.correctAnswer || ex.solution.finalAnswer, 
+                      { topic: ex.topic, subtopic: ex.subtopic }
+                    );
+                    return (
+                      <div className="mt-3 p-4 bg-rose-950/20 border border-rose-500/30 rounded-xl space-y-2.5 text-xs text-rose-100">
+                        <div className="font-bold text-rose-300 flex items-center justify-between">
+                          <span className="flex items-center gap-1.5">
+                            <AlertCircle className="w-4 h-4 text-rose-400" />
+                            <span>Diagnóstico Pedagógico: {diag.title}</span>
+                          </span>
+                          <button
+                            onClick={() => setStoryModalUnitId(ex.unitId)}
+                            className="text-amber-300 hover:text-amber-200 bg-amber-500/15 border border-amber-500/30 px-2.5 py-1 rounded-lg text-[11px] font-bold flex items-center gap-1 cursor-pointer transition-all"
+                          >
+                            <Compass className="w-3 h-3 text-amber-400" />
+                            <span>Ver Cuento del Tema</span>
+                          </button>
+                        </div>
+                        <p className="text-rose-200/90 leading-relaxed">
+                          <span className="font-semibold text-rose-300">¿Dónde se produjo el desvío? </span>
+                          {diag.whereItFailed}
+                        </p>
+                        <p className="text-slate-300 leading-relaxed bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/50">
+                          <span className="font-semibold text-amber-300">🧠 Trampa mental: </span>
+                          {diag.whyBrainDidIt}
+                        </p>
+                        <p className="text-emerald-200/90 leading-relaxed bg-emerald-950/30 p-2.5 rounded-lg border border-emerald-500/30">
+                          <span className="font-semibold text-emerald-300">🛡️ Cómo evitarlo en el examen: </span>
+                          {diag.howToPreventNextTime}
+                        </p>
+                      </div>
+                    );
+                  })()}
+
                   {/* Step by Step Details */}
                   <details className="mt-3 text-xs text-slate-300">
                     <summary className="text-indigo-300 cursor-pointer font-semibold hover:text-indigo-200">
@@ -633,6 +677,64 @@ export const ExamSimulator: React.FC = () => {
             })}
           </div>
         </div>
+
+        {/* Story Modal inside Exam Review */}
+        {storyModalUnitId && MATH_STORIES[storyModalUnitId] && (() => {
+          const st = MATH_STORIES[storyModalUnitId];
+          return (
+            <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+              <div className="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-4 my-8 max-h-[90vh] overflow-y-auto">
+                <div className="flex items-start justify-between border-b border-slate-800 pb-3">
+                  <div>
+                    <span className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5 mb-1">
+                      <Compass className="w-4 h-4" />
+                      <span>El Cuento Matemático & Intuición</span>
+                    </span>
+                    <h3 className="text-xl font-extrabold text-white">
+                      {st.storyTitle}
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setStoryModalUnitId(null)}
+                    className="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="text-xs sm:text-sm text-slate-200 space-y-3 italic font-serif leading-relaxed border-l-2 border-amber-500/40 pl-4">
+                  {st.narrative.split('\n\n').map((par, i) => (
+                    <p key={i}>{par}</p>
+                  ))}
+                </div>
+
+                <div className="bg-amber-950/30 border border-amber-500/30 p-3.5 rounded-xl text-xs space-y-1">
+                  <span className="font-bold text-amber-300 block uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                    <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                    <span>La Metáfora Cotidiana:</span>
+                  </span>
+                  <p className="text-amber-100/90 leading-relaxed">
+                    {st.realWorldAnalogy}
+                  </p>
+                </div>
+
+                <div className="bg-slate-800/80 border border-amber-500/30 p-3 rounded-xl text-center text-xs">
+                  <span className="text-amber-400 font-bold block mb-0.5">⭐ Regla de Oro:</span>
+                  <span className="text-slate-200 font-semibold italic">"{st.goldenRule}"</span>
+                </div>
+
+                <div className="flex justify-end pt-2">
+                  <button
+                    onClick={() => setStoryModalUnitId(null)}
+                    className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all cursor-pointer"
+                  >
+                    Entendido, Volver a la Revisión
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Back to selection */}
         <div className="flex justify-center pt-4">

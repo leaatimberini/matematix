@@ -8,8 +8,10 @@ import {
   verifyIntervalAnswer, 
   verifyCoordinateAnswer, 
   areAlgebraicExpressionsEquivalent,
-  diagnoseError 
+  diagnoseError,
+  type DetailedDiagnostic
 } from '../../math/mathEngine';
+import { MATH_STORIES } from '../../data/mathStories';
 import { useUser } from '../../context/UserContext';
 import { 
   HelpCircle, 
@@ -21,7 +23,11 @@ import {
   RotateCcw,
   Sparkles,
   BookOpen,
-  Info
+  Info,
+  Compass,
+  ShieldAlert,
+  Flame,
+  Clock
 } from 'lucide-react';
 
 interface ExercisePlayerProps {
@@ -45,10 +51,13 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
   const [textAnswer, setTextAnswer] = useState<string>('');
   const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [diagnostic, setDiagnostic] = useState<{ type: string; message: string; advice: string } | null>(null);
+  const [diagnostic, setDiagnostic] = useState<DetailedDiagnostic | null>(null);
   const [currentHintLevel, setCurrentHintLevel] = useState<number>(0); // 0 = none, 1..5
   const [showNoEntiendo, setShowNoEntiendo] = useState<boolean>(false);
+  const [showStoryModal, setShowStoryModal] = useState<boolean>(false);
   const [startTime] = useState<number>(Date.now());
+
+  const unitStory = MATH_STORIES[exercise.unitId];
 
   // Reset local state when exercise changes
   useEffect(() => {
@@ -59,6 +68,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
     setDiagnostic(null);
     setCurrentHintLevel(0);
     setShowNoEntiendo(false);
+    setShowStoryModal(false);
   }, [exercise.id]);
 
   const handleSubmit = (e?: React.FormEvent) => {
@@ -73,6 +83,20 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
       const opt = exercise.options?.find(o => o.id === selectedOption);
       correct = !!opt?.isCorrect;
       userAns = opt?.text || selectedOption;
+
+      if (!correct) {
+        setDiagnostic({
+          type: 'OPCION_INCORRECTA',
+          title: 'Desvío Conceptual en la Opción Seleccionada',
+          message: opt?.feedback || 'Elegiste una opción que contiene una trampa conceptual típica del examen de la UNLaM.',
+          advice: 'Revisa con detenimiento las condiciones y restricciones del enunciado, o abre la explicación en forma de cuento.',
+          whereItFailed: `Seleccionaste: "${opt?.text || selectedOption}"`,
+          whyBrainDidIt: 'Esta opción suele coincidir con el resultado de omitir una regla obligatoria (como olvidar la condición de existencia, invertir signos o saltarse la tabla de signos).',
+          howToPreventNextTime: 'Antes de marcar una opción, haz una verificación inversa: reemplaza el valor en la expresión original y constata si da una verdad matemática.',
+          quickCheckTest: '¿Tu opción anula algún denominador o contradice el gráfico? Si produce 0 en un divisor o una raíz negativa, ¡queda automáticamente descartada!',
+          storySnippet: 'En el examen no busques cuál opción se parece más a tu cálculo: busca cuál es matemáticamente infalible.'
+        });
+      }
     } else {
       userAns = textAnswer.trim();
       if (!userAns) return;
@@ -148,7 +172,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
     <div className="bg-slate-800/95 border border-slate-700/80 rounded-2xl p-6 shadow-2xl relative">
       {/* Exercise Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-slate-700/80">
-        <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="px-2.5 py-1 rounded-md text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
             {exercise.topic}
           </span>
@@ -164,9 +188,23 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
           </span>
         </div>
 
-        <div className="text-xs text-slate-400 flex items-center gap-1.5 font-mono">
-          <Info className="w-3.5 h-3.5 text-slate-400" />
-          <span>Fuente: {exercise.sourceReference}</span>
+        <div className="flex items-center gap-2">
+          {unitStory && (
+            <button
+              type="button"
+              onClick={() => setShowStoryModal(true)}
+              className="text-xs font-bold text-amber-300 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+              title="Aprende la intuición de este tema narrada como un cuento"
+            >
+              <Compass className="w-3.5 h-3.5 text-amber-400" />
+              <span>📖 Explicámelo como un cuento</span>
+            </button>
+          )}
+
+          <div className="text-xs text-slate-400 flex items-center gap-1.5 font-mono hidden sm:flex">
+            <Info className="w-3.5 h-3.5 text-slate-400" />
+            <span>Fuente: {exercise.sourceReference}</span>
+          </div>
         </div>
       </div>
 
@@ -280,12 +318,12 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
         )}
       </form>
 
-      {/* Result & Diagnostic Feedback Card */}
+      {/* Result & Detailed Pedagogical Diagnostic Feedback Card */}
       {hasSubmitted && (
-        <div className={`p-5 rounded-xl border mb-6 transition-all ${
+        <div className={`p-5 sm:p-6 rounded-2xl border mb-6 transition-all ${
           isCorrect 
-            ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-100'
-            : 'bg-rose-950/40 border-rose-500/50 text-rose-100'
+            ? 'bg-emerald-950/40 border-emerald-500/50 text-emerald-100 shadow-lg shadow-emerald-950/20'
+            : 'bg-rose-950/40 border-rose-500/50 text-rose-100 shadow-lg shadow-rose-950/20'
         }`}>
           <div className="flex items-start gap-3.5">
             {isCorrect ? (
@@ -293,26 +331,71 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
             ) : (
               <XCircle className="w-6 h-6 text-rose-400 shrink-0 mt-0.5" />
             )}
-            <div className="flex-1">
-              <h4 className="font-bold text-base">
-                {isCorrect ? '¡Excelente! Respuesta Matemáticamente Correcta' : 'Respuesta Incorrecta'}
+            <div className="flex-1 space-y-3">
+              <h4 className="font-extrabold text-base sm:text-lg">
+                {isCorrect ? '¡Excelente! Respuesta Matemáticamente Exacta' : diagnostic?.title || 'Respuesta Incorrecta'}
               </h4>
 
-              {/* Diagnostic for mistakes */}
+              {/* Rich Pedagogical Diagnostic Breakdown for Mistakes */}
               {!isCorrect && diagnostic && (
-                <div className="mt-2 text-sm space-y-1.5 text-rose-200/90">
-                  <p className="font-medium text-rose-300">
-                    <span className="font-bold">Diagnóstico:</span> {diagnostic.message}
-                  </p>
-                  <p className="text-xs bg-rose-900/30 p-2.5 rounded-lg border border-rose-700/40 text-rose-200">
-                    💡 <span className="font-semibold">Consejo de resolución:</span> {diagnostic.advice}
-                  </p>
+                <div className="space-y-3 pt-1">
+                  {/* Where it failed */}
+                  <div className="bg-rose-900/25 border border-rose-700/40 p-3.5 rounded-xl text-xs space-y-1">
+                    <span className="font-bold text-rose-300 block uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                      <span>¿Dónde se produjo el desvío?</span>
+                    </span>
+                    <p className="text-rose-100/90 leading-relaxed">
+                      {diagnostic.whereItFailed}
+                    </p>
+                  </div>
+
+                  {/* Why the brain fell into it */}
+                  <div className="bg-slate-900/80 border border-slate-700/80 p-3.5 rounded-xl text-xs space-y-1">
+                    <span className="font-bold text-amber-300 block uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                      <span>🧠 ¿Por qué tu mente tendió a cometer este error?</span>
+                    </span>
+                    <p className="text-slate-300 leading-relaxed">
+                      {diagnostic.whyBrainDidIt}
+                    </p>
+                  </div>
+
+                  {/* How to prevent next time */}
+                  <div className="bg-emerald-950/40 border border-emerald-500/40 p-3.5 rounded-xl text-xs space-y-1">
+                    <span className="font-bold text-emerald-300 block uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <ShieldAlert className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>🛡️ Cómo pensarlo para no volver a equivocarte nunca más:</span>
+                    </span>
+                    <p className="text-emerald-100/90 leading-relaxed">
+                      {diagnostic.howToPreventNextTime}
+                    </p>
+                  </div>
+
+                  {/* Quick 5-second check */}
+                  {diagnostic.quickCheckTest && (
+                    <div className="bg-indigo-950/40 border border-indigo-500/30 p-3 rounded-lg text-xs flex items-start gap-2 text-indigo-200">
+                      <Clock className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-indigo-300">Chequeo de 5 segundos: </span>
+                        <span>{diagnostic.quickCheckTest}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Story snippet / Real world analogy */}
+                  {diagnostic.storySnippet && (
+                    <div className="p-3 bg-amber-950/20 border border-amber-500/20 rounded-lg text-xs italic text-amber-200/90 flex items-start gap-2">
+                      <Compass className="w-4 h-4 text-amber-400 shrink-0 mt-0.5 not-italic" />
+                      <span>"{diagnostic.storySnippet}"</span>
+                    </div>
+                  )}
                 </div>
               )}
 
               {/* Correct answer display if wrong */}
               {!isCorrect && exercise.correctAnswer && (
-                <div className="mt-3 text-xs bg-slate-900/80 p-3 rounded-lg border border-slate-700 flex items-center justify-between">
+                <div className="mt-2 text-xs bg-slate-900/90 p-3 rounded-xl border border-slate-700 flex items-center justify-between">
                   <span className="text-slate-400 font-medium">Solución esperada:</span>
                   <span className="font-mono text-emerald-400 font-bold text-sm">
                     <MathView math={exercise.correctAnswer} />
@@ -321,7 +404,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
               )}
 
               {/* Action buttons after submission */}
-              <div className="mt-4 flex flex-wrap items-center gap-3">
+              <div className="mt-4 flex flex-wrap items-center gap-3 pt-2">
                 {!isCorrect && (
                   <button
                     onClick={() => {
@@ -329,16 +412,26 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
                       setIsCorrect(null);
                       setDiagnostic(null);
                     }}
-                    className="flex items-center gap-1.5 px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg text-xs font-semibold text-slate-200 cursor-pointer"
+                    className="flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-xs font-bold text-slate-200 cursor-pointer shadow-sm transition-all"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
-                    <span>Volver a Intentar</span>
+                    <span>Volver a Intentar con Mente Fresca</span>
+                  </button>
+                )}
+
+                {unitStory && (
+                  <button
+                    onClick={() => setShowStoryModal(true)}
+                    className="flex items-center gap-1.5 px-4 py-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 rounded-xl text-xs font-bold cursor-pointer transition-all"
+                  >
+                    <Compass className="w-3.5 h-3.5" />
+                    <span>Ver la Historia & Analogía</span>
                   </button>
                 )}
 
                 <button
                   onClick={() => setShowNoEntiendo(true)}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 rounded-lg text-xs font-semibold cursor-pointer"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/40 text-purple-300 rounded-xl text-xs font-bold cursor-pointer transition-all"
                 >
                   <HelpCircle className="w-3.5 h-3.5" />
                   <span>¿No entiendo? Explicación simple</span>
@@ -347,7 +440,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
                 {showNextButton && onNext && (
                   <button
                     onClick={onNext}
-                    className="ml-auto bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+                    className="ml-auto bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
                   >
                     <span>Siguiente Ejercicio</span>
                     <ChevronRight className="w-4 h-4" />
@@ -430,12 +523,83 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
         </div>
       )}
 
+      {/* Dedicated Story & Intuition Modal */}
+      {showStoryModal && unitStory && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl space-y-5 my-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-start justify-between border-b border-slate-800 pb-4">
+              <div>
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5 mb-1">
+                  <Compass className="w-4 h-4" />
+                  <span>Aprende este tema como si fuera un cuento</span>
+                </span>
+                <h3 className="text-xl font-extrabold text-white">
+                  {unitStory.storyTitle}
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowStoryModal(false)}
+                className="text-slate-400 hover:text-white text-xl font-bold p-1 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Narrative */}
+            <div className="text-xs sm:text-sm text-slate-200 space-y-3 italic font-serif leading-relaxed border-l-2 border-amber-500/40 pl-4">
+              {unitStory.narrative.split('\n\n').map((par, i) => (
+                <p key={i}>{par}</p>
+              ))}
+            </div>
+
+            {/* Metaphor */}
+            <div className="bg-amber-950/30 border border-amber-500/30 p-4 rounded-xl text-xs space-y-1">
+              <span className="font-bold text-amber-300 block uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                <span>La Analogía de la Vida Real:</span>
+              </span>
+              <p className="text-amber-100/90 leading-relaxed">
+                {unitStory.realWorldAnalogy}
+              </p>
+            </div>
+
+            {/* The Why */}
+            <div className="bg-slate-800/80 border border-slate-700 p-4 rounded-xl text-xs space-y-3">
+              <span className="font-bold text-indigo-300 block uppercase tracking-wider text-[11px]">
+                💡 El Por Qué de las Fórmulas:
+              </span>
+              {unitStory.theWhy.slice(0, 2).map((item, i) => (
+                <div key={i} className="space-y-0.5">
+                  <span className="font-bold text-slate-200 block">{item.question}</span>
+                  <p className="text-slate-300 leading-relaxed">{item.answer}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Golden Rule */}
+            <div className="bg-slate-800/80 border border-amber-500/30 p-3.5 rounded-xl text-center text-xs">
+              <span className="text-amber-400 font-bold block mb-1">⭐ Regla de Oro:</span>
+              <span className="text-slate-200 font-semibold italic">"{unitStory.goldenRule}"</span>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setShowStoryModal(false)}
+                className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-all cursor-pointer shadow-lg shadow-indigo-600/30"
+              >
+                ¡Entendido! Volver al Ejercicio
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* "No Entiendo" Alternative Explanation Modal */}
       {showNoEntiendo && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-bold text-amber-300 flex items-center gap-2">
+              <h3 className="text-base font-bold text-purple-300 flex items-center gap-2">
                 <span>💡</span> Modo "No Entiendo": Explicación Alternativa
               </h3>
               <button
@@ -448,9 +612,9 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
 
             <div className="space-y-3.5 text-xs text-slate-200">
               <div className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
-                <span className="text-amber-400 font-bold block mb-1 uppercase tracking-wider text-[11px]">Analogía de la Vida Real:</span>
+                <span className="text-amber-400 font-bold block mb-1 uppercase tracking-wider text-[11px]">Analogía Cotidiana:</span>
                 <p className="leading-relaxed">
-                  {exercise.commonTraps?.[0]?.diagnosis || 'Imagina este ejercicio como una balanza de dos platos: lo que haces de un lado, debes hacerlo exactamente igual del otro.'}
+                  {unitStory?.realWorldAnalogy || exercise.commonTraps?.[0]?.diagnosis || 'Imagina este ejercicio como una balanza de dos platos: lo que haces de un lado, debes hacerlo exactamente igual del otro.'}
                 </p>
               </div>
 

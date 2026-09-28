@@ -316,74 +316,134 @@ export function areAlgebraicExpressionsEquivalent(expr1: string, expr2: string, 
   return true;
 }
 
-/**
- * Diagnostic Engine: Detecta el tipo y motivo de un error estudiantil
- */
-export function diagnoseError(userAns: string, correctAns: string, context?: { topic?: string; subtopic?: string }): {
+export interface DetailedDiagnostic {
   type: string;
+  title: string;
   message: string;
   advice: string;
-} {
+  whereItFailed: string;
+  whyBrainDidIt: string;
+  howToPreventNextTime: string;
+  quickCheckTest: string;
+  storySnippet?: string;
+}
+
+/**
+ * Diagnostic Engine: Detecta con precisión pedagógica el tipo y motivo de un error estudiantil,
+ * explicando el qué, el por qué la mente cayó en la trampa y cómo evitarlo en el examen.
+ */
+export function diagnoseError(userAns: string, correctAns: string, context?: { topic?: string; subtopic?: string }): DetailedDiagnostic {
   const u = userAns.trim();
   const c = correctAns.trim();
 
-  // Check for inverted signs (e.g. 2 instead of -2, or -1/5 instead of 1/5)
+  // 1. Check for inverted signs (e.g. 2 instead of -2, or -1/5 instead of 1/5)
   const uFrac = parseFraction(u);
   const cFrac = parseFraction(c);
   if (uFrac && cFrac && Math.abs(fractionToFloat(uFrac) + fractionToFloat(cFrac)) < 1e-4) {
     return {
       type: "ERROR_DE_SIGNO",
-      message: "Tu valor numérico es correcto en magnitud, pero tiene el signo opuesto.",
-      advice: "Revisa con atención los pasajes de términos y la regla de los signos (especialmente al pasar multiplicando o dividiendo números negativos)."
+      title: "Desvío de Signo (+ / -)",
+      message: "Tu valor numérico es correcto en magnitud, pero tiene el signo opuesto al resultado exacto.",
+      advice: "Revisa con atención los pasajes de términos y la regla de los signos (especialmente al pasar multiplicando o dividiendo números negativos).",
+      whereItFailed: "El número o fracción que calculaste tiene la distancia correcta, pero cayó del lado equivocado del cero en la recta numérica.",
+      whyBrainDidIt: "Al hacer varios pasajes de términos sucesivos en un borrador rápido, nuestro cerebro tiende a olvidar que un término que suma pasa restando, o que distribuir un signo negativo adelante de un paréntesis le cambia el signo a TODO lo que está adentro: -(a - b) = -a + b.",
+      howToPreventNextTime: "Hacé una verificación inversa en 5 segundos: poné tu número en la primera ecuación original. Si te queda 4 = -4, sabés al instante que se te escapó un signo menos en el camino.",
+      quickCheckTest: "¿Pasaste un número dividiendo? Recuerda: si pasas -3 dividiendo, el -3 se lleva su signo menos al denominador, ¡no se vuelve positivo!",
+      storySnippet: "En economía, tener $1000 a favor en la cuenta bancaria es un éxito, pero deber $1000 es una deuda: un signo menos no es un detalle, ¡define si ganas o pierdes!"
     };
   }
 
-  // Check for open vs closed bracket in intervals
+  // 2. Check for denominator restriction omission
+  if ((c.includes('(-2') && u.includes('[-2')) || (c.includes('(') && u.includes('[') && (context?.subtopic?.includes('racional') || context?.topic?.includes('Inecuaciones')))) {
+    return {
+      type: "VALOR_PROHIBIDO_DENOMINADOR",
+      title: "Trampa Mortal: División por Cero en el Extremo",
+      message: "Incluiste con corchete un número que hace CERO al denominador de la fracción.",
+      advice: "Los valores que anulan el denominador NUNCA pueden pertenecer al conjunto solución. Deben llevar obligatoriamente paréntesis '(' o ')'.",
+      whereItFailed: "Pusiste corchete [ ] en un valor prohibido que produce una división por cero (indefinida en los números reales).",
+      whyBrainDidIt: "Como la inecuación de la consigna tenía el símbolo '≥' o '≤' (mayor o igual / menor o igual), la inercia mental te llevó a poner corchete en todos los números por igual sin discriminar el piso de la fracción.",
+      howToPreventNextTime: "Apenas arranca el ejercicio, marcá en rojo el valor prohibido del denominador: ese número nace con orden de alejamiento y JAMÁS puede llevar corchete.",
+      quickCheckTest: "Reemplazá el número del extremo en el denominador: si el denominador da 0, ¡ese extremo OBLIGATORIAMENTE lleva paréntesis!",
+      storySnippet: "El corchete [ ] es una invitación formal a entrar a la fiesta; pero dividir por cero es como querer repartir pizzas entre cero personas: ¡el universo explota! Por eso la puerta queda cerrada con paréntesis ( )."
+    };
+  }
+
+  // 3. Check for open vs closed bracket in intervals
   if (u.includes('(') || u.includes('[') || c.includes('(') || c.includes('[')) {
     const uClean = u.replace(/[()[\]]/g, '');
     const cClean = c.replace(/[()[\]]/g, '');
     if (uClean === cClean) {
       return {
         type: "ERROR_EXTREMOS_INTERVALO",
-        message: "Los números de los extremos son correctos, pero los corchetes o paréntesis están invertidos.",
-        advice: "Recuerda: corchete '[' o ']' significa que el extremo ESTÁ incluido (ej. con ≤ o ≥). Paréntesis '(' o ')' significa que NO está incluido (con < o >, en infinitos ±∞ o si anula un denominador)."
+        title: "Confusión de Corchetes [ ] y Paréntesis ( )",
+        message: "Los números de los extremos son perfectos, pero los corchetes o paréntesis están invertidos.",
+        advice: "Recuerda: corchete '[' o ']' significa que el extremo ESTÁ incluido (con ≤ o ≥). Paréntesis '(' o ')' significa que NO está incluido (con < o >, en infinitos ±∞ o si anula un denominador).",
+        whereItFailed: "Elegiste el símbolo de inclusión equivocado en uno o ambos extremos del intervalo.",
+        whyBrainDidIt: "Nuestra mente agota su energía calculando las raíces y los números, y al llegar al final relaja la atención pensando que el tipo de paréntesis es un detalle cosmético.",
+        howToPreventNextTime: "Asocia visualmente: rayita abajo en la desigualdad (≤ o ≥) = corchete recto [ ]. Sin rayita (< o >) o en ±∞ = paréntesis curvo ( ).",
+        quickCheckTest: "Los infinitos (-∞ y +∞) NUNCA llevan corchete porque el infinito no es un número donde puedas detenerte.",
+        storySnippet: "El corchete es una cerca con candado que incluye el terreno; el paréntesis es una línea divisoria imaginaria que puedes rozar pero nunca pisar."
       };
     }
   }
 
-  // Check for incomplete factoring
-  if (c.includes('(x - 3)^2') && u.includes('(x^2 - 9)')) {
+  // 4. Check for incomplete factoring
+  if ((c.includes('(x -') || c.includes('(x +')) && (u.includes('^2') || u.includes('^3'))) {
     return {
       type: "FACTOREO_INCOMPLETO",
-      message: "Factorizaste el trinomio, pero dejaste una diferencia de cuadrados sin descomponer.",
-      advice: "El enunciado pide aplicar 'todos los casos posibles': descompón (x² - 9) en (x - 3)(x + 3)."
+      title: "Factoreo Incompleto (A mitad de camino)",
+      message: "Hiciste un paso válido de factorización, pero dejaste términos que se pueden seguir descomponiendo.",
+      advice: "El enunciado pide explícitamente 'aplicar todos los casos posibles': revisa si te quedó alguna diferencia de cuadrados como (x² - 9) = (x - 3)(x + 3) o trinomios resolubles.",
+      whereItFailed: "Te detuviste tras el primer caso de factoreo sin comprobar si los factores resultantes todavía eran reducibles.",
+      whyBrainDidIt: "Sentiste el alivio de haber resuelto la primera fórmula y diste por concluido el problema prematuramente.",
+      howToPreventNextTime: "Regla de la cebolla: cada vez que saques un factor, mira lo que queda adentro. Si adentro hay x² con una resta o un trinomio, preguntate: '¿Se puede desarmar un nivel más?'.",
+      quickCheckTest: "¿Quedó alguna potencia x² adentro de un paréntesis? Si es una resta con un número cuadrado perfecto (1, 4, 9, 16, 25...), ¡aplica diferencia de cuadrados de inmediato!",
+      storySnippet: "Factorizar es como desarmar un motor en piezas Lego: si dejas dos bloques soldados juntos cuando podías separarlos en ladrillitos individuales, el trabajo quedó a medio terminar."
     };
   }
 
-  // Check for denominator restriction omission
-  if (c.includes('(-2') && u.includes('[-2')) {
-    return {
-      type: "VALOR_PROHIBIDO_DENOMINADOR",
-      message: "Incluiste el valor x = -2 en el intervalo, pero -2 anula el denominador (división por cero).",
-      advice: "Los valores que hacen cero el denominador NUNCA pueden pertenecer al conjunto solución. Deben llevar paréntesis '(' o ')'."
-    };
-  }
-
-  // Check for perpendicular slope error (inverted but forgot negative, or vice versa)
-  if (context?.topic === 'linear' || c.includes('y =')) {
-    if (u.includes('y = 3x') && c.includes('y = -3x')) {
+  // 5. Check for perpendicular slope error
+  if (context?.topic === 'linear' || c.includes('y =') || c.includes('m =')) {
+    if ((u.includes('y = 2x') && c.includes('y = -1/2x')) || (u.includes('3') && c.includes('-1/3'))) {
       return {
         type: "PENDIENTE_PERPENDICULAR_SIGNO",
-        message: "Invertiste la pendiente pero olvidaste el cambio de signo para rectas perpendiculares.",
-        advice: "La condición de perpendicularidad es m₂ = -1/m₁. Si m₁ = 1/3, entonces m₂ = -3."
+        title: "Condición de Perpendicularidad Incompleta",
+        message: "Para hallar la recta perpendicular debes INVERTIR la fracción Y CAMBIARLE el signo.",
+        advice: "La condición obligatoria de perpendicularidad es m₂ = -1/m₁. Si m₁ = 1/2, entonces m₂ = -2.",
+        whereItFailed: "Olvidas aplicar la doble transformación (inversión + cambio de signo).",
+        whyBrainDidIt: "Es común recordar una sola de las dos reglas: recordar que 'se da vuelta' pero olvidar el signo negativo, o cambiar el signo sin invertir.",
+        howToPreventNextTime: "Mnemotecnia 'Gira y Opone': si una recta sube en el cerro, la perpendicular tiene que caer en picada a 90 grados. Si m₁ es positiva, m₂ TIENE que ser negativa.",
+        quickCheckTest: "Multiplicá ambas pendientes: m₁ · m₂ DEBE dar exactamente -1.",
+        storySnippet: "Dos rectas perpendiculares son como las dos calles de una esquina en cruz: no basta con doblar la esquina, ¡tienes que cambiar de dirección por completo!"
       };
     }
   }
 
-  // General fallback diagnostic
+  // 6. Check for distributive trap with roots or powers
+  if (u.includes('+') && !c.includes('+') && (u.includes('a + b') || u.includes('x +'))) {
+    return {
+      type: "TRAMPA_DISTRIBUTIVA_SUMA",
+      title: "Trampa Clásica: Distribuir Potencias o Raíces en Suma",
+      message: "Distribuiste una potencia o raíz sobre una suma o resta: (a + b)² ≠ a² + b² y √(a + b) ≠ √a + √b.",
+      advice: "La potenciación y radicación SOLO distribuyen en multiplicación y división. En sumas, aplica la fórmula del binomio: (a + b)² = a² + 2ab + b².",
+      whereItFailed: "Eliminaste el término central del doble producto (2ab) o separaste una raíz sobre una suma.",
+      whyBrainDidIt: "Nuestro cerebro extrapola la propiedad distributiva de la multiplicación porque es cómoda y simétrica.",
+      howToPreventNextTime: "Comprobación aritmética de 3 segundos: √(9 + 16) = √25 = 5. Si distribuyes: √9 + √16 = 3 + 4 = 7 (¡7 no es 5!).",
+      quickCheckTest: "Cada vez que veas una suma bajo una raíz o potencia, ¡frena de golpe! No se puede separar término a término.",
+      storySnippet: "Una suma bajo una raíz es como un pastel horneado con harina y azúcar: no puedes sacar la harina por un lado y el azúcar por el otro sin deshacer la masa."
+    };
+  }
+
+  // 7. General fallback diagnostic
   return {
     type: "ERROR_PROCEDIMIENTO",
-    message: "El resultado no coincide con la solución analítica.",
-    advice: "Te sugerimos revisar el paso a paso en las pistas progresivas o pulsar 'No entiendo' para ver una explicación detallada."
+    title: "Desvío en el Procedimiento Analítico",
+    message: "El resultado no coincide con la solución analítica esperada.",
+    advice: "Te sugerimos revisar el paso a paso en las pistas pedagógicas progresivas o presionar 'Explicámelo como un cuento' para entender la intuición fundamental del ejercicio.",
+    whereItFailed: "Hubo un desfasaje en los pasos intermedios de despeje, simplificación o aplicación de propiedades.",
+    whyBrainDidIt: "En problemas de examen de la UNLaM suelen combinarse 2 o 3 conceptos simultáneos (ej: inecuación + fracción periódica + exponente negativo). Si uno de los engranajes patina, el resultado final se desvía.",
+    howToPreventNextTime: "Desglosa el problema en etapas aisladas: Paso 1 pasar a fracción, Paso 2 simplificar, Paso 3 resolver la estructura principal. No intentes saltar directo al final.",
+    quickCheckTest: "Revisa la primera línea de tu desarrollo escrito y compárala con el Paso 1 de la solución guiada.",
+    storySnippet: "Resolver matemáticas es como armar un mueble de muchas piezas: si ajustas mal el primer tornillo, la puerta del final no cerrará derecha. ¡Revisemos el primer tornillo!"
   };
 }
