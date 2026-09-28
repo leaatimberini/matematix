@@ -59,7 +59,7 @@ export const unit9Exponenciales: TopicUnit = {
   ],
   workedExample: {
     title: 'Ecuación Exponencial Oficial UNLaM Tema 1 (10 Pts)',
-    statement: 'Resolver la siguiente ecuación exponencial y verificar los resultados obtenidos:\n2^{x^2 + 2x + 1} = 16',
+    statement: 'Resolver la siguiente ecuación exponencial y verificar los resultados obtenidos:\n$$2^{x^2 + 2x + 1} = 16$$',
     steps: [
       {
         stepNumber: 1,

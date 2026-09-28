@@ -59,7 +59,7 @@ export const unit6Sistemas: TopicUnit = {
   ],
   workedExample: {
     title: 'Resolución de Sistema Incompatible (Examen Oficial Tema 1)',
-    statement: 'Resolver analítica y gráficamente el siguiente sistema y clasificarlo:\n\\begin{cases} 2x + y = 3 \\\\ 4x + 2y = 10 \\end{cases}',
+    statement: 'Resolver analítica y gráficamente el siguiente sistema y clasificarlo:\n$$\\begin{cases} 2x + y = 3 \\\\ 4x + 2y = 10 \\end{cases}$$',
     steps: [
       {
         stepNumber: 1,

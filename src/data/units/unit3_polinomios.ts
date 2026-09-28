@@ -64,7 +64,7 @@ export const unit3Polinomios: TopicUnit = {
   ],
   workedExample: {
     title: 'Ejercicio con Parámetro k de Cátedra UNLaM',
-    statement: 'Hallar el valor de k para que el polinomio P(x) = 2x^3 - kx^2 + 5x - 6 sea divisible por (x - 2).',
+    statement: 'Hallar el valor de $k$ para que el polinomio $$P(x) = 2x^3 - kx^2 + 5x - 6$$ sea divisible por $(x - 2)$.',
     steps: [
       {
         stepNumber: 1,

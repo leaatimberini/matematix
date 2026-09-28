@@ -72,7 +72,7 @@ export const unit4Factoreo: TopicUnit = {
   ],
   workedExample: {
     title: 'Operación con Fracciones Algebraicas (Examen Oficial Tema 2)',
-    statement: 'Resolver simplificando todo lo posible: \\frac{2x^3 - 18x}{x^2 - x - 6} : \\frac{x^3 + 3x^2 + 4x + 12}{x^4 - 16}',
+    statement: 'Resolver simplificando todo lo posible: $$\\frac{2x^3 - 18x}{x^2 - x - 6} : \\frac{x^3 + 3x^2 + 4x + 12}{x^4 - 16}$$',
     steps: [
       {
         stepNumber: 1,

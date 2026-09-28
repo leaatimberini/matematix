@@ -65,7 +65,7 @@ export const unit10Trigonometria: TopicUnit = {
   ],
   workedExample: {
     title: 'Resolución de Ecuación Trigonométrica en [0, 2π)',
-    statement: 'Resolver la siguiente ecuación trigonométrica en el intervalo [0, 2π):\n2\\sin(x) - 1 = 0',
+    statement: 'Resolver la siguiente ecuación trigonométrica en el intervalo [0, 2π):\n$$2\\sin(x) - 1 = 0$$',
     steps: [
       {
         stepNumber: 1,

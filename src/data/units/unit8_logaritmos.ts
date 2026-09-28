@@ -63,7 +63,7 @@ export const unit8Logaritmos: TopicUnit = {
   ],
   workedExample: {
     title: 'Ecuación Logarítmica Oficial UNLaM Tema 2 (10 Pts)',
-    statement: 'Resolver y verificar la siguiente ecuación logarítmica: \\log(10 - x) - 1 = \\log\\left(2x - \\frac{37}{5}\\right)',
+    statement: 'Resolver y verificar la siguiente ecuación logarítmica: $$\\log(10 - x) - 1 = \\log\\left(2x - \\frac{37}{5}\\right)$$',
     steps: [
       {
         stepNumber: 1,

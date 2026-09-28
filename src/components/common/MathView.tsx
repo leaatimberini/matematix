@@ -49,9 +49,23 @@ function isLikelyMath(str: string): boolean {
   return false;
 }
 
+function hasProseWords(str: string): boolean {
+  const words = str.match(/[a-zA-ZáéíóúñÁÉÍÓÚÑ]{3,}/g) || [];
+  const mathCommands = new Set([
+    'frac', 'sqrt', 'mathbb', 'text', 'cdot', 'times', 'left', 'right',
+    'begin', 'cases', 'bmatrix', 'pmatrix', 'end', 'sum', 'lim', 'int',
+    'log', 'ln', 'sin', 'cos', 'tan', 'cot', 'sec', 'csc', 'forall', 'exists',
+    'infty', 'partial', 'alpha', 'beta', 'gamma', 'delta', 'theta', 'lambda',
+    'sigma', 'omega', 'approx', 'equiv', 'circ', 'pm', 'mp', 'div', 'ne', 'le',
+    'ge', 'cup', 'cap', 'subset', 'in', 'notin', 'quad', 'qquad'
+  ]);
+  const nonMathWords = words.filter(w => !mathCommands.has(w.toLowerCase()));
+  return nonMathWords.length >= 2;
+}
+
 export function renderMathAndText(text: string, defaultBlock: boolean = false): string {
   if (!text) return '';
-  const trimmed = text.trim();
+  let trimmed = text.trim();
 
   // If the whole string is enclosed in $$...$$ without other outer text
   if (trimmed.startsWith('$$') && trimmed.endsWith('$$') && trimmed.indexOf('$$', 2) === trimmed.length - 2) {
@@ -71,16 +85,24 @@ export function renderMathAndText(text: string, defaultBlock: boolean = false): 
     }
   }
 
+  // If the text does not contain $, but has backslashes and prose words, auto-wrap LaTeX commands
+  if (!trimmed.includes('$') && trimmed.includes('\\') && hasProseWords(trimmed)) {
+    // Wrap LaTeX environments first
+    trimmed = trimmed.replace(/\\begin\{([a-zA-Z*]+)\}[\s\S]*?\\end\{\1\}/g, (m) => '$$' + m + '$$');
+    // Wrap LaTeX commands with arguments or symbols
+    trimmed = trimmed.replace(/\\[a-zA-Z]+(?:\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\})*/g, (m) => '$' + m + '$');
+  }
+
   // If it contains embedded $ or $$ (mixed text and math)
-  if (text.includes('$')) {
+  if (trimmed.includes('$')) {
     let result = '';
     const regex = /\$\$([\s\S]*?)\$\$|\$([^\$\n]+?)\$/g;
     let lastIndex = 0;
     let match: RegExpExecArray | null;
 
-    while ((match = regex.exec(text)) !== null) {
+    while ((match = regex.exec(trimmed)) !== null) {
       if (match.index > lastIndex) {
-        const plain = text.substring(lastIndex, match.index);
+        const plain = trimmed.substring(lastIndex, match.index);
         result += escapeAndFormatText(plain);
       }
       try {
@@ -97,8 +119,8 @@ export function renderMathAndText(text: string, defaultBlock: boolean = false): 
       lastIndex = regex.lastIndex;
     }
 
-    if (lastIndex < text.length) {
-      result += escapeAndFormatText(text.substring(lastIndex));
+    if (lastIndex < trimmed.length) {
+      result += escapeAndFormatText(trimmed.substring(lastIndex));
     }
     return result;
   }
@@ -115,7 +137,7 @@ export function renderMathAndText(text: string, defaultBlock: boolean = false): 
     }
   }
 
-  return escapeAndFormatText(text);
+  return escapeAndFormatText(trimmed);
 }
 
 export const MathView: React.FC<MathViewProps> = ({ math, block = false, className = '' }) => {

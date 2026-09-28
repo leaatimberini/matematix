@@ -41,7 +41,7 @@ export const unit1Reales: TopicUnit = {
   summaryTheory: [
     {
       title: 'Conjuntos Numéricos',
-      content: 'Los números reales (\\mathbb{R}) se dividen en Racionales (\\mathbb{Q}, números que pueden expresarse como cociente a/b con a,b \\in \\mathbb{Z}, b \\ne 0) e Irracionales (\\mathbb{I}, infinitas cifras decimales no periódicas como \\sqrt{2}, \\pi, e).',
+      content: 'Los números reales ($\\mathbb{R}$) se dividen en Racionales ($\\mathbb{Q}$, números que pueden expresarse como cociente $a/b$ con $a,b \\in \\mathbb{Z}$, $b \\ne 0$) e Irracionales ($\\mathbb{I}$, infinitas cifras decimales no periódicas como $\\sqrt{2}$, $\\pi$, $e$).',
       math: '\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R}, \\quad \\mathbb{I} = \\mathbb{R} \\setminus \\mathbb{Q}'
     },
     {
@@ -79,7 +79,7 @@ export const unit1Reales: TopicUnit = {
   ],
   workedExample: {
     title: 'Cálculo Combinado con Periódicos y Potencias (Clave de Examen)',
-    statement: 'Calcular el valor exacto de: \\sqrt{0,\\hat{4}} + 3^{-1} - \\sqrt[3]{0,125}',
+    statement: 'Calcular el valor exacto de: $$\\sqrt{0,\\hat{4}} + 3^{-1} - \\sqrt[3]{0,125}$$',
     steps: [
       {
         stepNumber: 1,

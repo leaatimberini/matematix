@@ -70,7 +70,7 @@ export const unit2Inecuaciones: TopicUnit = {
   ],
   workedExample: {
     title: 'Resolución de Inecuación Racional de Examen Oficial',
-    statement: 'Resolver la inecuación: \\frac{3x - 2}{2x + 4} \\le \\sqrt{0,\\hat{4}} + 3^{-1}',
+    statement: 'Resolver la inecuación: $$\\frac{3x - 2}{2x + 4} \\le \\sqrt{0,\\hat{4}} + 3^{-1}$$',
     steps: [
       {
         stepNumber: 1,

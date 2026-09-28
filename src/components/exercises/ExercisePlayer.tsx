@@ -252,7 +252,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
                     className="mt-1 accent-indigo-500"
                   />
                   <div className="flex-1 text-sm text-slate-100">
-                    <span>{opt.text}</span>
+                    <span><MathView math={opt.text} /></span>
                     {opt.math && <MathView math={opt.math} className="ml-2" />}
                   </div>
                 </label>
@@ -345,9 +345,9 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
                       <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
                       <span>¿Dónde se produjo el desvío?</span>
                     </span>
-                    <p className="text-rose-100/90 leading-relaxed">
-                      {diagnostic.whereItFailed}
-                    </p>
+                    <div className="text-rose-100/90 leading-relaxed">
+                      <MathView math={diagnostic.whereItFailed} />
+                    </div>
                   </div>
 
                   {/* Why the brain fell into it */}
@@ -356,9 +356,9 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
                       <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
                       <span>🧠 ¿Por qué tu mente tendió a cometer este error?</span>
                     </span>
-                    <p className="text-slate-300 leading-relaxed">
-                      {diagnostic.whyBrainDidIt}
-                    </p>
+                    <div className="text-slate-300 leading-relaxed">
+                      <MathView math={diagnostic.whyBrainDidIt} />
+                    </div>
                   </div>
 
                   {/* How to prevent next time */}
@@ -367,9 +367,9 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
                       <ShieldAlert className="w-3.5 h-3.5 text-emerald-400" />
                       <span>🛡️ Cómo pensarlo para no volver a equivocarte nunca más:</span>
                     </span>
-                    <p className="text-emerald-100/90 leading-relaxed">
-                      {diagnostic.howToPreventNextTime}
-                    </p>
+                    <div className="text-emerald-100/90 leading-relaxed">
+                      <MathView math={diagnostic.howToPreventNextTime} />
+                    </div>
                   </div>
 
                   {/* Quick 5-second check */}
@@ -378,7 +378,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
                       <Clock className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
                       <div>
                         <span className="font-bold text-indigo-300">Chequeo de 5 segundos: </span>
-                        <span>{diagnostic.quickCheckTest}</span>
+                        <span><MathView math={diagnostic.quickCheckTest} /></span>
                       </div>
                     </div>
                   )}
@@ -387,7 +387,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
                   {diagnostic.storySnippet && (
                     <div className="p-3 bg-amber-950/20 border border-amber-500/20 rounded-lg text-xs italic text-amber-200/90 flex items-start gap-2">
                       <Compass className="w-4 h-4 text-amber-400 shrink-0 mt-0.5 not-italic" />
-                      <span>"{diagnostic.storySnippet}"</span>
+                      <span>"<MathView math={diagnostic.storySnippet} />"</span>
                     </div>
                   )}
                 </div>
@@ -487,7 +487,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
                   </span>
                   <div className="flex-1">
                     <span className="font-semibold text-amber-300 block mb-0.5">{hintTitles[idx]}</span>
-                    <span>{hint}</span>
+                    <span><MathView math={hint} /></span>
                   </div>
                 </div>
               ))}
@@ -510,13 +510,13 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
             <div className="mt-4 pt-3 border-t border-slate-800 space-y-3 text-xs text-slate-300">
               {exercise.solution.steps.map((st, i) => (
                 <div key={i} className="p-3 bg-slate-800/60 rounded-lg border border-slate-700/50">
-                  <div className="font-semibold text-slate-200 mb-1">{st.text}</div>
+                  <div className="font-semibold text-slate-200 mb-1"><MathView math={st.text} /></div>
                   {st.math && <MathView math={st.math} block />}
                 </div>
               ))}
               <div className="p-2.5 bg-emerald-950/40 border border-emerald-500/30 rounded-lg text-emerald-300 font-bold flex items-center justify-between">
                 <span>Resultado final:</span>
-                <span className="font-mono text-sm">{exercise.solution.finalAnswer}</span>
+                <span className="font-mono text-sm"><MathView math={exercise.solution.finalAnswer} /></span>
               </div>
             </div>
           </details>
@@ -613,23 +613,23 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
             <div className="space-y-3.5 text-xs text-slate-200">
               <div className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
                 <span className="text-amber-400 font-bold block mb-1 uppercase tracking-wider text-[11px]">Analogía Cotidiana:</span>
-                <p className="leading-relaxed">
-                  {unitStory?.realWorldAnalogy || exercise.commonTraps?.[0]?.diagnosis || 'Imagina este ejercicio como una balanza de dos platos: lo que haces de un lado, debes hacerlo exactamente igual del otro.'}
-                </p>
+                <div className="leading-relaxed">
+                  <MathView math={unitStory?.realWorldAnalogy || exercise.commonTraps?.[0]?.diagnosis || 'Imagina este ejercicio como una balanza de dos platos: lo que haces de un lado, debes hacerlo exactamente igual del otro.'} />
+                </div>
               </div>
 
               <div className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
                 <span className="text-indigo-400 font-bold block mb-1 uppercase tracking-wider text-[11px]">Estrategia Simplificada:</span>
-                <p className="leading-relaxed">
-                  {exercise.hints[0]}
-                </p>
+                <div className="leading-relaxed">
+                  <MathView math={exercise.hints[0]} />
+                </div>
               </div>
 
               <div className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
                 <span className="text-emerald-400 font-bold block mb-1 uppercase tracking-wider text-[11px]">Consejo para no equivocarse:</span>
-                <p className="leading-relaxed">
-                  {exercise.hints[1]}
-                </p>
+                <div className="leading-relaxed">
+                  <MathView math={exercise.hints[1]} />
+                </div>
               </div>
             </div>
 

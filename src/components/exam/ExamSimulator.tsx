@@ -391,7 +391,7 @@ export const ExamSimulator: React.FC = () => {
                     className="mt-1 accent-indigo-500"
                   />
                   <div className="flex-1 text-sm text-slate-100">
-                    <span>{opt.text}</span>
+                    <span><MathView math={opt.text} /></span>
                     {opt.math && <MathView math={opt.math} className="ml-2" />}
                   </div>
                 </label>
@@ -642,18 +642,18 @@ export const ExamSimulator: React.FC = () => {
                             <span>Ver Cuento del Tema</span>
                           </button>
                         </div>
-                        <p className="text-rose-200/90 leading-relaxed">
+                        <div className="text-rose-200/90 leading-relaxed">
                           <span className="font-semibold text-rose-300">¿Dónde se produjo el desvío? </span>
-                          {diag.whereItFailed}
-                        </p>
-                        <p className="text-slate-300 leading-relaxed bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/50">
+                          <MathView math={diag.whereItFailed} />
+                        </div>
+                        <div className="text-slate-300 leading-relaxed bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/50">
                           <span className="font-semibold text-amber-300">🧠 Trampa mental: </span>
-                          {diag.whyBrainDidIt}
-                        </p>
-                        <p className="text-emerald-200/90 leading-relaxed bg-emerald-950/30 p-2.5 rounded-lg border border-emerald-500/30">
+                          <MathView math={diag.whyBrainDidIt} />
+                        </div>
+                        <div className="text-emerald-200/90 leading-relaxed bg-emerald-950/30 p-2.5 rounded-lg border border-emerald-500/30">
                           <span className="font-semibold text-emerald-300">🛡️ Cómo evitarlo en el examen: </span>
-                          {diag.howToPreventNextTime}
-                        </p>
+                          <MathView math={diag.howToPreventNextTime} />
+                        </div>
                       </div>
                     );
                   })()}
@@ -666,7 +666,7 @@ export const ExamSimulator: React.FC = () => {
                     <div className="mt-3 space-y-2 pt-2 border-t border-slate-800">
                       {ex.solution.steps.map((st, i) => (
                         <div key={i} className="p-2.5 bg-slate-800/60 rounded border border-slate-700/40">
-                          <span className="font-semibold text-slate-200 block mb-1">{st.text}</span>
+                          <span className="font-semibold text-slate-200 block mb-1"><MathView math={st.text} /></span>
                           {st.math && <MathView math={st.math} block />}
                         </div>
                       ))}

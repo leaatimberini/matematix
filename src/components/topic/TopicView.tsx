@@ -201,11 +201,11 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
                   <div>
                     <h4 className="text-sm font-bold text-indigo-300 mb-2.5 flex items-start gap-2">
                       <span className="text-indigo-400 font-mono text-xs">P{idx + 1}.</span>
-                      <span>{item.question}</span>
+                      <span><MathView math={item.question} /></span>
                     </h4>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      {item.answer}
-                    </p>
+                    <div className="text-xs text-slate-300 leading-relaxed">
+                      <MathView math={item.answer} />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -230,9 +230,9 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
                   <h4 className="text-sm font-bold text-slate-100 mb-2">
                     {st.title}
                   </h4>
-                  <p className="text-xs text-slate-300 leading-relaxed">
-                    {st.description}
-                  </p>
+                  <div className="text-xs text-slate-300 leading-relaxed">
+                    <MathView math={st.description} />
+                  </div>
                 </div>
               ))}
             </div>
@@ -243,9 +243,9 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
             <span className="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-2">
               ⭐ La Regla de Oro Inolvidable
             </span>
-            <p className="text-base sm:text-lg font-bold text-amber-200 max-w-3xl mx-auto leading-relaxed">
-              "{story.goldenRule}"
-            </p>
+            <div className="text-base sm:text-lg font-bold text-amber-200 max-w-3xl mx-auto leading-relaxed">
+              "<MathView math={story.goldenRule} />"
+            </div>
           </div>
 
           {/* UNLaM Trap Map */}
@@ -265,22 +265,22 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
                 <div key={idx} className="bg-slate-900/90 border border-rose-500/30 rounded-xl p-5 space-y-3">
                   <div className="flex items-center gap-2 text-rose-300 font-bold text-xs">
                     <AlertCircle className="w-4 h-4 shrink-0" />
-                    <span>{trap.trapTitle}</span>
+                    <span><MathView math={trap.trapTitle} /></span>
                   </div>
 
                   <div className="bg-rose-950/20 border border-rose-900/40 p-3 rounded-lg text-xs text-rose-200">
                     <span className="font-semibold block mb-0.5 text-rose-400">Error clásico:</span>
-                    {trap.commonMistake}
+                    <MathView math={trap.commonMistake} />
                   </div>
 
                   <div className="text-xs text-slate-300">
                     <span className="font-semibold text-slate-200 block mb-0.5">🧠 ¿Por qué la mente cae en esto?</span>
-                    {trap.whyBrainFalls}
+                    <MathView math={trap.whyBrainFalls} />
                   </div>
 
                   <div className="bg-emerald-950/30 border border-emerald-500/30 p-3 rounded-lg text-xs text-emerald-200">
                     <span className="font-semibold text-emerald-400 block mb-0.5">🛡️ Cómo evitarlo (El antídoto):</span>
-                    {trap.howToAvoid}
+                    <MathView math={trap.howToAvoid} />
                   </div>
                 </div>
               ))}
@@ -325,7 +325,7 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
               {unit.whatYouWillLearn.map((obj, i) => (
                 <li key={i} className="flex items-start gap-2 bg-slate-900/50 p-2.5 rounded-lg border border-slate-700/40">
                   <span className="text-indigo-400 font-bold shrink-0">•</span>
-                  <span>{obj}</span>
+                  <span><MathView math={obj} /></span>
                 </li>
               ))}
             </ul>
@@ -352,9 +352,9 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
                       <MathView math={kf.latex} block />
                     </div>
                   </div>
-                  <p className="text-xs text-slate-400 mt-2 pt-2 border-t border-slate-800">
-                    {kf.description}
-                  </p>
+                  <div className="text-xs text-slate-400 mt-2 pt-2 border-t border-slate-800">
+                    <MathView math={kf.description} />
+                  </div>
                 </div>
               ))}
             </div>
@@ -365,7 +365,9 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
             {unit.summaryTheory.map((st, i) => (
               <div key={i} className="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 shadow-xl">
                 <h4 className="text-base font-bold text-white mb-2">{st.title}</h4>
-                <p className="text-xs text-slate-300 leading-relaxed mb-3">{st.content}</p>
+                <div className="text-xs text-slate-300 leading-relaxed mb-3">
+                  <MathView math={st.content} />
+                </div>
                 {st.math && (
                   <div className="bg-slate-900/70 p-3.5 rounded-xl border border-slate-700 text-indigo-300 text-xs overflow-x-auto">
                     <MathView math={st.math} block />
@@ -397,13 +399,16 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
                   <div className="py-1 text-slate-100 text-xs">
                     <MathView math={st.math} block />
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">{st.explanation}</p>
+                  <div className="text-xs text-slate-400 mt-1">
+                    <MathView math={st.explanation} />
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-4 p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs font-semibold">
-              ✓ {unit.workedExample.conclusion}
+            <div className="mt-4 p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs font-semibold flex items-center gap-2">
+              <span>✓</span>
+              <MathView math={unit.workedExample.conclusion} />
             </div>
           </div>
 
@@ -417,7 +422,7 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
               {unit.examTips.map((tip, i) => (
                 <li key={i} className="flex items-start gap-2 bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/60">
                   <span className="text-amber-400 font-bold">•</span>
-                  <span>{tip}</span>
+                  <span className="flex-1"><MathView math={tip} /></span>
                 </li>
               ))}
             </ul>
@@ -443,50 +448,50 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <div className="bg-slate-800/90 border border-slate-700 p-5 rounded-2xl shadow-lg">
               <span className="text-indigo-400 font-bold block mb-1 text-[11px] uppercase">1. ¿Qué es exactamente?</span>
-              <p className="text-slate-200 leading-relaxed">{unit.explainFromScratch.whatIsIt}</p>
+              <div className="text-slate-200 leading-relaxed"><MathView math={unit.explainFromScratch.whatIsIt} /></div>
             </div>
 
             <div className="bg-slate-800/90 border border-slate-700 p-5 rounded-2xl shadow-lg">
               <span className="text-indigo-400 font-bold block mb-1 text-[11px] uppercase">2. ¿Por qué existe y para qué sirve?</span>
-              <p className="text-slate-200 leading-relaxed">{unit.explainFromScratch.whyExists}</p>
+              <div className="text-slate-200 leading-relaxed"><MathView math={unit.explainFromScratch.whyExists} /></div>
             </div>
 
             <div className="bg-slate-800/90 border border-slate-700 p-5 rounded-2xl shadow-lg">
               <span className="text-indigo-400 font-bold block mb-1 text-[11px] uppercase">3. ¿Qué significa el resultado?</span>
-              <p className="text-slate-200 leading-relaxed">{unit.explainFromScratch.whatMeans}</p>
+              <div className="text-slate-200 leading-relaxed"><MathView math={unit.explainFromScratch.whatMeans} /></div>
             </div>
 
             <div className="bg-slate-800/90 border border-slate-700 p-5 rounded-2xl shadow-lg">
               <span className="text-indigo-400 font-bold block mb-1 text-[11px] uppercase">4. ¿Cuándo se utiliza?</span>
-              <p className="text-slate-200 leading-relaxed">{unit.explainFromScratch.whenUsed}</p>
+              <div className="text-slate-200 leading-relaxed"><MathView math={unit.explainFromScratch.whenUsed} /></div>
             </div>
 
             <div className="bg-slate-800/90 border border-slate-700 p-5 rounded-2xl shadow-lg">
               <span className="text-indigo-400 font-bold block mb-1 text-[11px] uppercase">5. ¿Cómo se reconoce en un ejercicio?</span>
-              <p className="text-slate-200 leading-relaxed">{unit.explainFromScratch.howRecognized}</p>
+              <div className="text-slate-200 leading-relaxed"><MathView math={unit.explainFromScratch.howRecognized} /></div>
             </div>
 
             <div className="bg-slate-800/90 border border-slate-700 p-5 rounded-2xl shadow-lg">
               <span className="text-indigo-400 font-bold block mb-1 text-[11px] uppercase">6. ¿Qué fórmula o método corresponde?</span>
-              <p className="text-slate-200 leading-relaxed font-mono text-[11px] bg-slate-900/60 p-2 rounded">
-                {unit.explainFromScratch.correspondingFormula}
-              </p>
+              <div className="text-slate-200 leading-relaxed font-mono text-[11px] bg-slate-900/60 p-2 rounded overflow-x-auto">
+                <MathView math={unit.explainFromScratch.correspondingFormula} block={unit.explainFromScratch.correspondingFormula.includes('$$')} />
+              </div>
             </div>
 
             <div className="bg-slate-800/90 border border-slate-700 p-5 rounded-2xl shadow-lg">
               <span className="text-indigo-400 font-bold block mb-1 text-[11px] uppercase">7. ¿Cómo se aplica paso a paso?</span>
-              <p className="text-slate-200 leading-relaxed">{unit.explainFromScratch.howApplied}</p>
+              <div className="text-slate-200 leading-relaxed"><MathView math={unit.explainFromScratch.howApplied} /></div>
             </div>
 
             <div className="bg-slate-800/90 border border-slate-700 p-5 rounded-2xl shadow-lg">
               <span className="text-rose-400 font-bold block mb-1 text-[11px] uppercase">8. ¿Qué errores suelen ocurrir?</span>
-              <p className="text-slate-200 leading-relaxed">{unit.explainFromScratch.commonMistakes}</p>
+              <div className="text-slate-200 leading-relaxed"><MathView math={unit.explainFromScratch.commonMistakes} /></div>
             </div>
           </div>
 
           <div className="bg-slate-800/90 border border-amber-500/40 p-5 rounded-2xl shadow-lg text-xs">
             <span className="text-amber-400 font-bold block mb-1 text-[11px] uppercase">9. ¿Cómo aparece en el examen de la UNLaM?</span>
-            <p className="text-slate-200 leading-relaxed">{unit.explainFromScratch.howAppearsInExam}</p>
+            <div className="text-slate-200 leading-relaxed"><MathView math={unit.explainFromScratch.howAppearsInExam} /></div>
           </div>
 
           {/* Checkpoint Question */}
@@ -495,7 +500,7 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
               Control de Comprensión Inmediato
             </span>
             <h3 className="text-sm font-bold text-white mb-4">
-              {unit.explainFromScratch.checkpointQuestion.question}
+              <MathView math={unit.explainFromScratch.checkpointQuestion.question} />
             </h3>
 
             <div className="space-y-2.5">
@@ -514,11 +519,11 @@ export const TopicView: React.FC<TopicViewProps> = ({ unit, onBackToCourseMap })
                       : 'bg-slate-900/60 border-slate-700 hover:border-slate-500 text-slate-200'
                   }`}
                 >
-                  <div className="font-semibold">{opt.text}</div>
+                  <div className="font-semibold"><MathView math={opt.text} /></div>
                   {checkpointChecked && checkpointAnswer === idx && (
-                    <p className={`mt-2 pt-2 border-t text-[11px] ${opt.isCorrect ? 'text-emerald-300 border-emerald-500/30' : 'text-rose-300 border-rose-500/30'}`}>
-                      {opt.explanation}
-                    </p>
+                    <div className={`mt-2 pt-2 border-t text-[11px] ${opt.isCorrect ? 'text-emerald-300 border-emerald-500/30' : 'text-rose-300 border-rose-500/30'}`}>
+                      <MathView math={opt.explanation} />
+                    </div>
                   )}
                 </button>
               ))}

@@ -62,7 +62,7 @@ export const unit5Lineal: TopicUnit = {
   ],
   workedExample: {
     title: 'Recta Perpendicular Oficial UNLaM Tema 1 (10 Pts)',
-    statement: 'Hallar la ecuación de la recta r₂ que es perpendicular a la recta r₁: y = (1/3)x + 2 y pasa por el punto P = (1; -2).',
+    statement: 'Hallar la ecuación de la recta $r_2$ que es perpendicular a la recta $r_1: y = \\frac{1}{3}x + 2$ y pasa por el punto $P = (1; -2)$.',
     steps: [
       {
         stepNumber: 1,

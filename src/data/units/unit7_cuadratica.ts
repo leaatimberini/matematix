@@ -71,7 +71,7 @@ export const unit7Cuadratica: TopicUnit = {
   ],
   workedExample: {
     title: 'Análisis Completo de Cuadrática (Examen Oficial Tema 2)',
-    statement: 'Dada la función f(x) = -2x² - x + 6:\na) Hallar raíces, vértice y ordenada al origen.\nb) Graficar e indicar el conjunto imagen.',
+    statement: 'Dada la función $$f(x) = -2x^2 - x + 6$$:\na) Hallar raíces, vértice y ordenada al origen.\nb) Graficar e indicar el conjunto imagen.',
     steps: [
       {
         stepNumber: 1,
