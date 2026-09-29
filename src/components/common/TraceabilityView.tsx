@@ -100,14 +100,14 @@ export const TraceabilityView: React.FC = () => {
       <div className="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 shadow-xl overflow-x-auto">
         <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
           <Database className="w-5 h-5 text-amber-400" />
-          <span>Matriz de Exámenes Reales UNLaM (Imágenes WhatsApp)</span>
+          <span>Matriz de Exámenes Reales UNLaM (Evaluaciones Oficiales)</span>
         </h3>
 
         <table className="w-full text-left text-xs text-slate-200">
           <thead>
             <tr className="border-b border-slate-700 text-slate-400 uppercase text-[10px] tracking-wider">
               <th className="pb-3 font-semibold">Examen Modelo</th>
-              <th className="pb-3 font-semibold">Imagen Fuente</th>
+              <th className="pb-3 font-semibold">Documento Fuente</th>
               <th className="pb-3 font-semibold">Puntaje</th>
               <th className="pb-3 font-semibold">Ejercicios Clave</th>
               <th className="pb-3 font-semibold text-right">Estado</th>
@@ -119,12 +119,12 @@ export const TraceabilityView: React.FC = () => {
                 <td className="py-3 text-amber-400 font-semibold font-sans">
                   {exam.title}
                 </td>
-                <td className="py-3 text-slate-400">
+                <td className="py-3 text-slate-300 font-mono text-[11px]">
                   {exam.id === 'exam_unlam_tema1_10pts' 
-                    ? 'WhatsApp Image...30.14 PM.jpeg' 
+                    ? 'EXAMEN-FINAL-UNLaM-TEMA-1-(10-PUNTOS).jpeg' 
                     : exam.id === 'exam_unlam_tema1_100pts' 
-                    ? 'WhatsApp Image...30.14 PM (1).jpeg' 
-                    : 'WhatsApp Image...30.14 PM (2).jpeg'}
+                    ? 'EXAMEN-FINAL-UNLaM-TEMA-1-(100-PUNTOS).jpeg' 
+                    : 'EXAMEN-FINAL-UNLaM-TEMA-2-(10-PUNTOS).jpeg'}
                 </td>
                 <td className="py-3 text-slate-300">
                   {exam.totalPoints} pts ({exam.durationMinutes} min)
