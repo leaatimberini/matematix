@@ -2,6 +2,8 @@
   "name": "matematix-unlam",
   "private": true,
   "version": "1.0.0",
+  "author": "Leaa <http://instagram.com/leaa.emanuel>",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

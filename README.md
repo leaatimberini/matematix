@@ -1,5 +1,10 @@
 # MATEMATIX UNLaM — Plataforma Interactiva de Preparación para Examen Final
 
+[![License: MIT](https://img.shields.io/badge/Licencia-MIT-emerald.svg)](./LICENSE)
+[![Autor: Leaa](https://img.shields.io/badge/Autor-Leaa-indigo.svg)](http://instagram.com/leaa.emanuel)
+[![Instagram](https://img.shields.io/badge/Instagram-@leaa.emanuel-E4405F?logo=instagram&logoColor=white)](http://instagram.com/leaa.emanuel)
+[![Tests: 144 pasados](https://img.shields.io/badge/Tests-144%20pasados-success.svg)](./test-math-engine.js)
+
 Plataforma educativa de nivel profesional diseñada específicamente para preparar al estudiante para la **evaluación y examen final real de Matemática** del **Curso de Ingreso de la Universidad Nacional de La Matanza (Departamento de Ciencias Económicas)**.
 
 ---
@@ -97,3 +102,24 @@ c:\matematix\
    - Gráfica de parábola para raíces, vértice y conjunto imagen.
    - Funciones a tramos con saltos y extremos abiertos/cerrados.
    - Circunferencia trigonométrica unitaria con seno y coseno.
+
+---
+
+## 👤 Autor y Créditos
+
+Este proyecto fue ideado, diseñado y desarrollado íntegramente por:
+
+* **Autor**: **Leaa**
+* **Instagram**: [@leaa.emanuel](http://instagram.com/leaa.emanuel)
+* **GitHub**: [@leaatimberini](https://github.com/leaatimberini)
+* **Repositorio**: [https://github.com/leaatimberini/matematix](https://github.com/leaatimberini/matematix)
+
+Si este proyecto te ayudó en tu preparación para el examen o te resultó interesante, podés seguirme en Instagram y dejar una ⭐ en el repositorio.
+
+---
+
+## 📄 Licencia de Uso
+
+Este proyecto se encuentra bajo la **Licencia MIT**. Esto significa que es de código abierto y podés utilizarlo, estudiarlo y compartirlo libremente.
+
+Consulta el archivo [`LICENSE`](./LICENSE) para conocer los términos completos.
